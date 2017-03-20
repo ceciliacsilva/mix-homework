@@ -27,7 +27,7 @@ Use:
 	> (aunt)
 
 
-PERT-CPM
+PERT-CPM - TODO
 --------
 
 Work on business intelligence focused on project management. Basically, CPM (Critical Path Method) and PERT (Programme Evaluation Review Technique) are project management techniques, which have been created out to schedule and control complex projects.
