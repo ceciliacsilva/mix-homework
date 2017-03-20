@@ -3,6 +3,7 @@ Mix - Homework
 
 I created this repository for put some of my homework, most of then are made in Racket Language. They were made as final work for some courses.
 
+
 Family-tree
 -----------
 
@@ -14,14 +15,25 @@ I made some modification and changed to English file: newMyFamily.rkt, original 
 
     Course: Logical and Functional Languages
 
-USE:
+Use:
 
 	$ cd family-tree/
 	$ drracket myFamilyLLF.rkt &
+	> (sister)
+	> (brother)
+	> (grandfather)
+	> (grandmother)
+	> (uncle)
+	> (aunt)
+
 
 PERT-CPM
 --------
 
-Basically, CPM (Critical Path Method) and PERT (Programme Evaluation Review Technique) are project management techniques, which have been created out to schedule and control complex projects.
+Work on business intelligence focused on project management. Basically, CPM (Critical Path Method) and PERT (Programme Evaluation Review Technique) are project management techniques, which have been created out to schedule and control complex projects.
 
-	Folder: pert-cpm/   
+	Folder: pert-cpm/
+
+
+	Course: Database
+
