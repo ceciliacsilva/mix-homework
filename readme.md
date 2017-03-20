@@ -8,4 +8,8 @@ Family-tree
 
 The first program that a decides to share are a prolog like family-tree made in Racklog. Racklog is an embedding of Prolog-style logic programming in Racket. Embedding” means you don’t lose Racket: You can use Prolog-style and conventional Racket code fragments alongside each other.
 
-Folder: family-tree/
+    Folder: family-tree/
+
+I made some modification and changed to English file: newMyFamily.rkt, original program: myFamilyLLF.rkt.
+
+    Course: Logical and Functional Languages
