@@ -13,3 +13,15 @@ The first program that a decides to share are a prolog like family-tree made in 
 I made some modification and changed to English file: newMyFamily.rkt, original program: myFamilyLLF.rkt.
 
     Course: Logical and Functional Languages
+
+USE:
+
+	$ cd family-tree/
+	$ drracket myFamilyLLF.rkt &
+
+PERT-CPM
+--------
+
+Basically, CPM (Critical Path Method) and PERT (Programme Evaluation Review Technique) are project management techniques, which have been created out to schedule and control complex projects.
+
+	Folder: pert-cpm/   
