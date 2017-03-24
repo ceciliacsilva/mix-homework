@@ -4,10 +4,10 @@
 ;;File:       cheb.rkt
 ;;Author:     Cecília Carneiro e Silva
 ;;Descrition: Using chebyshev polynomials to calculate integrals and derivatives
-;;Use:        >(define mycos (chebev (chebft 0 (/ pi 2) 16 cos)))
+;;Use:        > (define mycos (chebev (chebft 0 (/ pi 2) 16 cos)))
 ;;            > (mycos (/ pi 2))
 
-;;            >(define icos (chebev (chint (chebft 0 (/ pi 2) 16 cos))))
+;;            > (define icos (chebev (chint (chebft 0 (/ pi 2) 16 cos))))
 ;;            > (icos (/ pi 2))
 
 ;;            > (define dcos (chebev (chder (chebft 0 (/ pi 2) 16 cos))))
@@ -21,58 +21,67 @@
 
 
 (define (chebft a b n fn)
-  (let [(f (make-vector n))
-        (bma (* 0.5 (- b a)))
-        (bpa (* 0.5 (+ b a)))
-        (fac (/ 2.0 n))]
-    (for [(k (in-range 0 n))]
-      (let [(y (cos (* pi (/ (+ k 0.5) n))))]
-        (vector-set! f k (apply fn (list (+ (* y bma) bpa))))))
-    (let [(c (for/vector [(j (in-range n))]
-              (* fac
-                 (for/sum [(k (in-range n))]
-                   (* (vector-ref f k) (cos (* pi j (/ (+ k 0.5) n)))))
-                 )))]
-      (list a b c)
-    )))
+  (let [ (bma (* 0.5 (- b a)))
+         (bpa (* 0.5 (+ b a)))
+         (fac (/ 2.0 n)) ]
+    (let [ (f
+            (for/vector ( (k (in-range 0 n)) )
+                        (let [ (y (cos (* pi (/ (+ k 0.5) n)))) ]
+                          (apply fn (list (+ (* y bma) bpa))) )) ) ]
+      (let [ (c
+              (for/vector ( (j (in-range n)) )
+                (* fac
+                   (for/sum ( (f_i (in-vector f))
+                              (k (in-naturals))   )
+                     (* f_i (cos (* pi j (/ (+ k 0.5) n))))) )) )]
+        (list a b c) )) ))
 
 (define (chebev abc)
-  (lambda(x)
-    (let* [(a (list-ref abc 0))
-           (b (list-ref abc 1))
-           (c (list-ref abc 2))
-           (m (vector-length c))
-           (y (/ (- (* 2.0 x) a b) (- b a)))
-           (y2 (* 2.0 y))]
+  (lambda (x)
+    (let* [ (a (list-ref abc 0))
+            (b (list-ref abc 1))
+            (c (list-ref abc 2))
+            (m (vector-length c))
+            (y (/ (- (* 2.0 x) a b) (- b a)))
+            (y2 (* 2.0 y)) ]
       (when (> (* (- x a) (- x b))  0.0)
         (error "Not in range"))
-      (let* [(sv 0.0)
-             (d 0.0)
-             (dd sv)]
-        (for [(j (in-range (- m 1) 0 -1))]
-          (set! sv d)
-          (set! d (+ (- (* y2 d) dd) (vector-ref c j)))
-          (set! dd sv))
-        (+ (- (* y d) dd) (* 0.5 (vector-ref c 0)))))))
+      (let-values [ ( (sv d dd)
+                      (for/fold [ (sv 0.0)
+                                  (d  0.0)
+                                  (dd 0.0)  ]
+                                ( [j (in-range (- m 1) 0 -1)] )
+                        (values d
+                                (+ (- (* y2 d) dd) (vector-ref c j) )
+                                d) ) ) ]
+        (+ (- (* y d) dd) (* 0.5 (vector-ref c 0)))
+        ))
+    ) )
 
 (define (chint abc)
-  (let* [(a (list-ref abc 0))
-        (b (list-ref abc 1))
-        (c (list-ref abc 2))
-        (n (vector-length c))
-        (cint (make-vector n))
-        (con (* 0.25 (- b a)))
-        (sum 0.0)
-        (fac 1.0)]
-    (for [(j (in-range 1 (- n 1)))]
-      (vector-set! cint j (/ (* con (- (vector-ref c (- j 1)) (vector-ref c (+ j 1)))) j))
-      (set! sum (+ sum (* fac (vector-ref cint j))))
-      (set! fac (- fac)))
-    (vector-set! cint (- n 1) (/ (* con (vector-ref c (- n 2))) (- n 1)))
-    (set! sum (+ sum (* fac (vector-ref cint (- n 1)))))
-    (vector-set! cint 0 (* 2.0 sum))
-    (list a b cint)))
-      
+  (let* [ (a   (list-ref abc 0))
+          (b   (list-ref abc 1))
+          (c   (list-ref abc 2))
+          (n   (vector-length c))
+          (con (* 0.25  (- b a))) ]
+    (let-values [ ( (cint_list sum fac)
+                    (for/fold [ (cint '(0))
+                                (sum  0.0)
+                                (fac  1.0) ]
+                              ( [j (in-range 1 (- n 1))] )
+                              (values (cons (/ (* con
+                                                  (- (vector-ref c (- j 1))
+                                                     (vector-ref c (+ j 1)))) j) cint)
+                                      (+ sum (* fac (/ (* con
+                                                          (- (vector-ref c (- j 1))
+                                                             (vector-ref c (+ j 1)))) j)))
+                                      (- fac)) ) ) ]
+      (let [ (cint (list->vector (reverse (cons 0 cint_list)) )) ]
+        (vector-set! cint (- n 1) (/ (* con (vector-ref c (- n 2))) (- n 1)))
+        (vector-set! cint 0       (* 2.0 (+ sum (* fac (vector-ref cint (- n 1))))))
+        (list a b cint))) ))
+                              
+
 (define (chder abc)
   (let* [(a (list-ref abc 0))
          (b (list-ref abc 1))

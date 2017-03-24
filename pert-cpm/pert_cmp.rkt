@@ -1,12 +1,12 @@
 #lang racket
 
-;;File:       cpmCecilia.rkt
+;;File:       pert_cpm.rkt
 ;;Author:     Cecília Carneiro e Silva
 ;;Descrition: Simple implementation of PERT-CPM for project management
 ;;Use:        > (geraJS 'A 'O var G)
               ;;create a javaScript with the result, from A to O
 
-(include "cheb.rkt")
+(require "chebyshev.rkt")
 (require plot)
 (plot-new-window? #t)
 

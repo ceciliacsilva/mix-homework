@@ -1,11 +1,13 @@
 #lang racket
 
-;;File:       cpmCecilia.rkt
-;;Author:     Cecília Carneiro e Silva
-;;Descrition: Simple implementation of PERT-CPM for project management
-;;Use:        > (geraJS 'A 'O var G)
-              ;;create a javaScript with the result, from A to O
+#|Implementação PERT-CMP, para gerenciamento de projetos.
+Cecília Carneiro e Silva.
 
+Para usar: 
+ (geraJS 'A 'O var G) ;;Gera os resultados, para o grafo G, atividade início A e final O
+
+Arquivo de saída cpmOut.html
+|#
 (include "cheb.rkt")
 (require plot)
 (plot-new-window? #t)

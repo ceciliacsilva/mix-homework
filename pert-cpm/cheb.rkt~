@@ -1,23 +1,17 @@
-#lang racket
-(provide (all-defined-out))
+;;Cecília Carneiro e Silva  Arq:cheb.rkt
 
-;;File:       cheb.rkt
-;;Author:     Cecília Carneiro e Silva
-;;Descrition: Using chebyshev polynomials to calculate integrals and derivatives
-;;Use:        >(define mycos (chebev (chebft 0 (/ pi 2) 16 cos)))
-;;            > (mycos (/ pi 2))
+;#lang racket
 
-;;            >(define icos (chebev (chint (chebft 0 (/ pi 2) 16 cos))))
-;;            > (icos (/ pi 2))
-
-;;            > (define dcos (chebev (chder (chebft 0 (/ pi 2) 16 cos))))
-;;            > (dcos (/ pi 2))
-
-;;            > (define j0 (BESSEL-J 0))
-;;            > (j0 1.0)
-
-;;            > (define xj0 (chebev (chebft 0.0 10.0 16 j0)))
-;;            > (xj0 1.0)
+;>(define mycos (chebev (chebft 0 (/ pi 2) 16 cos)))
+;> (mycos (/ pi 2))
+;>(define icos (chebev (chint (chebft 0 (/ pi 2) 16 cos))))
+;> (icos (/ pi 2))
+;> (define dcos (chebev (chder (chebft 0 (/ pi 2) 16 cos))))
+;> (dcos (/ pi 2))
+;> (define j0 (BESSEL-J 0))
+;> (j0 1.0)
+;> (define xj0 (chebev (chebft 0.0 10.0 16 j0)))
+;> (xj0 1.0)
 
 
 (define (chebft a b n fn)
@@ -28,12 +22,14 @@
     (for [(k (in-range 0 n))]
       (let [(y (cos (* pi (/ (+ k 0.5) n))))]
         (vector-set! f k (apply fn (list (+ (* y bma) bpa))))))
-    (let [(c (for/vector [(j (in-range n))]
+    ;(displayln f)
+   (let [(c (for/vector [(j (in-range n))]
               (* fac
                  (for/sum [(k (in-range n))]
                    (* (vector-ref f k) (cos (* pi j (/ (+ k 0.5) n)))))
                  )))]
-      (list a b c)
+     ;(displayln c)
+     (list a b c)
     )))
 
 (define (chebev abc)
