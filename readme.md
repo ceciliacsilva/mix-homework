@@ -37,3 +37,7 @@ Work on business intelligence focused on project management. Basically, CPM (Cri
 
 	Course: Database
 
+Use:
+	$ drracket pert_cpm.rkt &
+	> (geraJS 'A 'O var G)
+
